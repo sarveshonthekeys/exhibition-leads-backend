@@ -1,0 +1,22 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- AlterTable
+ALTER TABLE [dbo].[OrganizationMaster] ADD [billTo] NVARCHAR(1000),
+[billToPincode] INT,
+[shipTo] NVARCHAR(1000),
+[shipToPincode] INT;
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH

@@ -1,0 +1,12 @@
+model CampaignTypeMaster {
+    id                      Int       @id @default(autoincrement())
+    camapignType            String
+    campaignTypeDescription String?
+    createdBy               String?
+    createdOn               DateTime  @default(now())
+    modifiedBy              String?
+    modifiedOn              DateTime? @updatedAt
+    status                  Boolean   @default(true)
+
+    campaignMaster CampaignMaster[]
+}

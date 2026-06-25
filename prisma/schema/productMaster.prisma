@@ -1,0 +1,29 @@
+model ProductMaster {
+  id                 Int       @id @default(autoincrement())
+  orgId              Int
+  sbuId              Int
+  productFamilyId    Int
+  productCode        String
+  productName        String
+  productDescription String?
+  model              models[]
+  createdBy          String?
+  createdOn          DateTime  @default(now())
+  modifiedBy         String?
+  modifiedOn         DateTime? @updatedAt
+  status             Boolean   @default(true)
+
+  organizationMaster OrganizationMaster  @relation(fields: [orgId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  sbuMaster          SbuMaster           @relation(fields: [sbuId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  productFamily      ProductFamilyMaster @relation(fields: [productFamilyId], references: [id])
+
+  VisitorProduct VisitorIntProduct[]
+}
+
+model models {
+  id              Int     @id @default(autoincrement())
+  modelName       String?
+  productMasterId Int
+
+  productMaster ProductMaster @relation(fields: [productMasterId], references: [id])
+}

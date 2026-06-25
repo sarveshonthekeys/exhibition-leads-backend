@@ -1,0 +1,16 @@
+model GvDisbursementMaster {
+  id             Int       @id @default(autoincrement())
+  orgId          Int
+  sbuId          Int
+  visitorId      Int
+  gvDisbursement Boolean
+  createdBy      String?
+  createdOn      DateTime  @default(now())
+  modifiedBy     String?
+  modifiedOn     DateTime? @updatedAt
+  status         Boolean   @default(true)
+
+  organizationMaster OrganizationMaster? @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sbuMaster          SbuMaster?          @relation(fields: [sbuId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  visitorMaster      VisitorMaster?      @relation(fields: [visitorId], references: [id])
+}

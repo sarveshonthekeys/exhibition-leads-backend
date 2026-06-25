@@ -1,0 +1,15 @@
+model PlanMaster {
+    id             Int       @id @default(autoincrement())
+    name           String    @unique
+    validity       String
+    validityInDays Int
+    price          Int
+    description    String?
+    createdBy      String?
+    createdOn      DateTime  @default(now())
+    modifiedBy     String?
+    modifiedOn     DateTime? @updatedAt
+    status         Boolean   @default(true)
+
+    subscriptionMaster SubscriptionMaster[]
+}

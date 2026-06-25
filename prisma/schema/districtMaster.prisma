@@ -1,0 +1,8 @@
+model districtMaster {
+    id      Int    @id @default(autoincrement())
+    stateId Int
+    name    String @unique
+
+    stateMaster   stateMaster     @relation(fields: [stateId], references: [id])
+    visitorMaster VisitorMaster[]
+}

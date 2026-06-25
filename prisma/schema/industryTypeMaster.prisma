@@ -1,0 +1,12 @@
+model IndustryTypeMaster {
+    id                      Int       @id @default(autoincrement())
+    industryType            String
+    industryTypeDescription String?
+    createdBy               String?
+    createdOn               DateTime  @default(now())
+    modifiedBy              String?
+    modifiedOn              DateTime? @updatedAt
+    status                  Boolean   @default(true)
+
+    visitorMaster VisitorMaster[]
+}

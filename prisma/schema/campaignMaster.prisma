@@ -1,0 +1,21 @@
+model CampaignMaster {
+  id                Int       @id @default(autoincrement())
+  orgId             Int
+  campaignName      String
+  campaignTypeId    Int
+  description       String?
+  fromDate          String
+  toDate            String
+  stateId           Int
+  districtId        Int
+  location          String?
+  campaignObjective String?
+  createdBy         String?
+  createdOn         DateTime  @default(now())
+  modifiedBy        String?
+  modifiedOn        DateTime? @updatedAt
+  status            Boolean   @default(true)
+
+  organizationMaster OrganizationMaster? @relation(fields: [orgId], references: [id])
+  campaignTypeMaster CampaignTypeMaster? @relation(fields: [campaignTypeId], references: [id])
+}

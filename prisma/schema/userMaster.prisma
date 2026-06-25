@@ -1,0 +1,27 @@
+model UserMaster {
+  id           Int       @id @default(autoincrement())
+  orgId        Int
+  orgName      String?
+  sbuId        Int?
+  campaignId   Int?
+  campaignName String?
+  username     String
+  password     String
+  email        String?   @unique
+  mobile       String?
+  address      String?
+  pincode      Int?
+  roleId       Int?
+  expoToken    String?
+  createdBy    String?
+  createdOn    DateTime  @default(now())
+  modifiedBy   String?
+  modifiedOn   DateTime? @updatedAt
+  status       Boolean   @default(false)
+
+  organizationMaster OrganizationMaster? @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sbuMaster          SbuMaster?          @relation(fields: [sbuId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  roleMaster         RoleMaster?         @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  subscriptionMaster SubscriptionMaster[]
+}

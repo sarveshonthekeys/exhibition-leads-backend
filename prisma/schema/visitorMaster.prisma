@@ -1,0 +1,62 @@
+model VisitorMaster {
+  id                 Int                 @id @default(autoincrement())
+  orgId              Int
+  sbuId              Int?
+  campaignId         Int
+  industryTypeId     Int
+  userId             Int
+  visitorDetails     VisitorDetails[]
+  companyType        Int?
+  companyName        String?
+  address            String?
+  stateId            Int
+  districtId         Int
+  pincode            Int?
+  productsInterested VisitorIntProduct[]
+  attachmentId       Int?
+  noOfGifts          String?
+  giftDetails        String?
+
+  planningTimeline      String?
+  financingReuired      Boolean?
+  noOfPeopleAccompanied Int?
+  noOfGiftsNeeded       String?
+  createdBy             String?
+  createdOn             DateTime  @default(now())
+  modifiedBy            String?
+  modifiedOn            DateTime? @updatedAt
+  status                Boolean   @default(true)
+
+  gvDisbursementMaster GvDisbursementMaster[]
+  industryTypeMaster   IndustryTypeMaster     @relation(fields: [industryTypeId], references: [id])
+  stateMaster          stateMaster            @relation(fields: [stateId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  district             districtMaster         @relation(fields: [districtId], references: [id])
+  sbu                  SbuMaster?             @relation(fields: [sbuId], references: [id]) // Reference to the SbuMaster model
+}
+
+model VisitorIntProduct {
+  id              Int  @id @default(autoincrement())
+  orgId           Int
+  sbuId           Int?
+  userId          Int
+  visitorMasterId Int?
+  productFamilyId Int?
+  productId       Int?
+  modelId         Int?
+  noOfMachines    Int?
+
+  productMaster ProductMaster? @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  VisitorMaster VisitorMaster? @relation(fields: [visitorMasterId], references: [id])
+}
+
+model VisitorDetails {
+  id              Int            @id @default(autoincrement())
+  orgId           Int
+  sbuId           Int?
+  userId          Int
+  visitorName     String?
+  email           String?
+  mobileNo        String?
+  VisitorMaster   VisitorMaster? @relation(fields: [visitorMasterId], references: [id])
+  visitorMasterId Int?
+}

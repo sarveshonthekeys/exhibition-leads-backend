@@ -1,0 +1,25 @@
+model RoleMaster {
+  id              Int            @id @default(autoincrement())
+  orgId           Int
+  roleName        String
+  roleDescription String?
+  menu            MenuAssigned[]
+  createdBy       String?
+  createdOn       DateTime       @default(now())
+  modifiedBy      String?
+  modifiedOn      DateTime?      @updatedAt
+  status          Boolean        @default(true)
+
+  organizationMaster OrganizationMaster? @relation(fields: [orgId], references: [id])
+
+  userMaster UserMaster[]
+}
+
+model MenuAssigned {
+  id           Int     @id @default(autoincrement())
+  roleMasterId Int?
+  menuId       Int?
+  menuName     String?
+
+  RoleMaster RoleMaster? @relation(fields: [roleMasterId], references: [id])
+}

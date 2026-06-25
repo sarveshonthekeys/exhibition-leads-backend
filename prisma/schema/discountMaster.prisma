@@ -1,0 +1,11 @@
+model DiscountMaster {
+    id                     Int       @id @default(autoincrement())
+    discountCouponCode     String    @unique
+    discountDescription    String?
+    discountValueInPercent Int
+    createdBy              String?
+    createdOn              DateTime  @default(now())
+    modifiedBy             String?
+    modifiedOn             DateTime? @updatedAt
+    status                 Boolean   @default(true)
+}

@@ -1,0 +1,16 @@
+module.exports = {
+  apps: [
+    {
+      name: 'EXH_APP_API',
+      script: 'dist/src/main.js',
+      env: {
+        NODE_ENV: 'development',
+        PORT: 3003
+      },
+      env_production: {
+        NODE_ENV: 'production',
+        PORT: 3003
+      }
+    }
+  ]
+};

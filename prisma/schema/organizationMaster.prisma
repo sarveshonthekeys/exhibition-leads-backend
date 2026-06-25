@@ -1,0 +1,31 @@
+model OrganizationMaster {
+    id             Int       @id @default(autoincrement())
+    orgName        String
+    orgTypeId      Int?
+    orgDescription String?
+    address        String?
+    pincode        Int?
+    billTo         String?
+    shipTo         String?
+    billToPincode  Int?
+    shipToPincode  Int?
+    orgContactName String?
+    orgMobileNo    String    @unique
+    orgEmail       String    @unique
+    createdBy      String?
+    createdOn      DateTime  @default(now())
+    modifiedBy     String?
+    modifiedOn     DateTime? @updatedAt
+    status         Boolean   @default(true)
+
+    SbuMaster          SbuMaster[]
+    RoleMaster         RoleMaster[]
+    UserMaster         UserMaster[]
+    campaignMaster     CampaignMaster[]
+    gvDisbursement     GvDisbursementMaster[]
+    productMaster      ProductMaster[]
+    subscriptionMaster SubscriptionMaster[]
+    productFamily      ProductFamilyMaster[]
+
+    organizationTypeMaster OrganizationTypeMaster? @relation(fields: [orgTypeId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+}

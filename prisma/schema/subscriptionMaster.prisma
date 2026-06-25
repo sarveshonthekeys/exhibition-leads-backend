@@ -1,0 +1,23 @@
+model SubscriptionMaster {
+    id                   Int       @id @default(autoincrement())
+    orgId                Int
+    userId               Int
+    planId               Int
+    couponCode           String?
+    discountedPrice      Int?
+    startDate            String?
+    endDate              String?
+    transactionStatus    Boolean
+    transactionReference String?
+    noOfDaysPending      String
+    isActive             Boolean
+    createdBy            String?
+    createdOn            DateTime  @default(now())
+    modifiedBy           String?
+    modifiedOn           DateTime? @updatedAt
+    status               Boolean   @default(false)
+
+    organizationMaster OrganizationMaster? @relation(fields: [orgId], references: [id])
+    userMaster         UserMaster?         @relation(fields: [userId], references: [id])
+    planMaster         PlanMaster          @relation(fields: [planId], references: [id])
+}

@@ -1,0 +1,19 @@
+model SbuMaster {
+    id             Int       @id @default(autoincrement())
+    orgId          Int
+    sbuName        String
+    sbuDescription String?
+    createdBy      String?
+    createdOn      DateTime  @default(now())
+    modifiedBy     String?
+    modifiedOn     DateTime? @updatedAt
+    Status         Boolean   @default(true)
+
+    organizationMaster OrganizationMaster?    @relation(fields: [orgId], references: [id])
+    userMaster         UserMaster[]
+    gvDisbursememt     GvDisbursementMaster[]
+    productMaster      ProductMaster[]
+    //visitorMaster VisitorMaster[]
+    VisitorMaster      VisitorMaster[]
+    productFamily      ProductFamilyMaster[]
+}

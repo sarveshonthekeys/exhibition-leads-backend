@@ -1,0 +1,7 @@
+model stateMaster {
+    id   Int    @id @default(autoincrement())
+    name String @unique
+
+    districtMaster districtMaster[]
+    visitorMaster  VisitorMaster[]
+}

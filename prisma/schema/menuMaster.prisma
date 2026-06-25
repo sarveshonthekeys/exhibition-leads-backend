@@ -1,0 +1,9 @@
+model MenuMaster {
+    id   Int    @id @default(autoincrement())
+    name String @unique
+    createdBy               String?
+    createdOn               DateTime  @default(now())
+    modifiedBy              String?
+    modifiedOn              DateTime? @updatedAt
+    status                  Boolean   @default(true)
+}

@@ -1,0 +1,22 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- AlterTable
+ALTER TABLE [dbo].[OrganizationMaster] ALTER COLUMN [contactMobile] NVARCHAR(1000) NULL;
+
+-- AlterTable
+ALTER TABLE [dbo].[UserMaster] ALTER COLUMN [mobile] NVARCHAR(1000) NULL;
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH
