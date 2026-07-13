@@ -8,6 +8,8 @@ import { CreateUserMasterDto } from './dto/create-user-master.dto';
 import { UpdateUserMasterDto } from './dto/update-user-master.dto';
 import { PrismaService } from 'src/prisma.service';
 import { LoginDto } from './dto/login.dto';
+import * as bcrypt from 'bcryptjs';
+import { JwtService } from '@nestjs/jwt';
 import * as nodemailer from 'nodemailer';
 import { ResponseDto } from 'src/dto/Response.dto';
 import * as ExcelJS from 'exceljs';
@@ -21,6 +23,7 @@ export class UserMasterService {
     private readonly prisma: PrismaService,
     private readonly emailService: EmailService,
     private readonly helperService: HelperService,
+    private readonly jwtService: JwtService,
   ) {}
 
   private otps = new Map<string, { otp: string; expiry: Date }>();
@@ -54,8 +57,10 @@ export class UserMasterService {
         };
       }
 
+      // Hash the password before saving so the raw password is never stored
+      const hashedPassword = await bcrypt.hash(createUserMasterDto.password, 10);
       const data = await this.prisma.userMaster.create({
-        data: createUserMasterDto,
+        data: { ...createUserMasterDto, password: hashedPassword },
       });
       return {
         message: data,
@@ -360,8 +365,11 @@ export class UserMasterService {
       const userRes = await this.prisma.userMaster.findUnique({
         where: { email: email },
       });
-      //console.log('user in login', user);
-      if (!userRes || userRes.password !== password) {
+      // Compare the typed password against the stored hash (never plain-text)
+      const passwordMatches = userRes
+        ? await bcrypt.compare(password, userRes.password)
+        : false;
+      if (!userRes || !passwordMatches) {
         return {
           message: 'Invalid credentials',
           statusCode: HttpStatus.UNAUTHORIZED,
@@ -387,7 +395,14 @@ export class UserMasterService {
           where: subWhereClause,
           orderBy: { endDate: 'desc' },
         });
-        const user = { ...userRes, orgName: organizationName.orgName };
+        // Issue a signed JWT (the "wristband") and remove the password hash from the response
+        const token = this.jwtService.sign({
+          sub: userRes.id,
+          email: userRes.email,
+          roleId: userRes.roleId,
+        });
+        const { password: _pw, ...safeUser } = userRes;
+        const user = { ...safeUser, orgName: organizationName.orgName, token };
 
         //console.log(version, platform);
         if (

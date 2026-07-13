@@ -25,12 +25,18 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { DiscountMasterModule } from './discount-master/discount-master.module';
 import { OrganizationTypeMasterModule } from './organization-type-master/organization-type-master.module';
 import { HelperModule } from './helper/helper.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: './.env',
+    }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET || 'dev-secret-change-me',
+      signOptions: { expiresIn: '7d' },
     }),
     UserMasterModule,
     OrganizationMasterModule,

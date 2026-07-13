@@ -8,8 +8,10 @@ import {
   Delete,
   BadRequestException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { UserMasterService } from './user-master.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateUserMasterDto } from './dto/create-user-master.dto';
 import { UpdateUserMasterDto } from './dto/update-user-master.dto';
 import { LoginDto } from './dto/login.dto';
@@ -26,6 +28,7 @@ export class UserMasterController {
     return await this.userMasterService.create(createUserMasterDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(): Promise<ResponseDto> {
     return await this.userMasterService.findAll();
