@@ -1,0 +1,20 @@
+# Never copy these into the image.
+# node_modules is the important one: yours are Windows-built,
+# and the image must build its own Linux ones.
+node_modules
+dist
+
+# Secrets must never be baked into an image
+.env
+.env.*
+
+# Junk
+.git
+.gitignore
+*.log
+coverage
+.vscode
+.idea
+Dockerfile
+.dockerignore
+README.md
