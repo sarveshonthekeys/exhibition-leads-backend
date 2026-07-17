@@ -23,6 +23,7 @@ export class AppController {
   health() {
     return {
       status: 'ok',
+      service: 'exhibition-api',
       uptime: Math.round(process.uptime()),
       timestamp: new Date().toISOString(),
     };
